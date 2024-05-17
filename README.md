@@ -30,9 +30,6 @@ Importa el archivo hotelinking2.sql sin modificar ninguna configuración y haz c
 - **Navega a la carpeta del backend**:
 cd /laravel-backend/
 
-- **Instala las dependencias**:
-composer install
-
 
 - **Ejecuta la aplicación**: 
 php artisan serve
