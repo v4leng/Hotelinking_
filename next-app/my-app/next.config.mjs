@@ -4,7 +4,7 @@ const nextConfig = {
         return [
             {
                 source: '/api-proxy/:path*',
-                destination: 'https://hotelinking-production.up.railway.app/*',
+                destination: 'https://hotelinking-production.up.railway.app*',
             },
         ]
     },
