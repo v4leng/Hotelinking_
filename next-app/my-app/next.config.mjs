@@ -4,10 +4,10 @@ const nextConfig = {
         return [
             {
                 source: '/api-proxy/:path*',
-                destination: 'https://railway.app*',
+                destination: 'https://hotelinking-production.up.railway.app/*',
             },
         ]
     },
 }
 
-export default nextConfig;
+module.exports = nextConfig;
