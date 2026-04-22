@@ -22,15 +22,15 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     )
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
+    const xsrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1]
 
     const register = async ({ setErrors, ...props }) => {
         await csrf()
 
         setErrors([])
-        const xsrfToken = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1]
 
         axios
              .post('/api/register', props, {
@@ -53,7 +53,11 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/api/login', props)
+            .post('/api/login', props, {
+            headers: {
+                'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            }
+        })
             .then(() => mutate())
             .catch(error => {
                  if (!error.response || error.response.status !== 422) throw error
