@@ -27,9 +27,17 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         await csrf()
 
         setErrors([])
+        const xsrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1]
 
         axios
-            .post('/register', props)
+             .post('/register', props, {
+            headers: {
+                'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
+            }
+        })
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
