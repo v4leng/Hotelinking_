@@ -22,13 +22,13 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     )
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
-    const xsrfToken = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1]
 
     const register = async ({ setErrors, ...props }) => {
         await csrf()
+         const xsrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1]
 
         setErrors([])
 
@@ -48,6 +48,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const login = async ({ setErrors, setStatus, ...props }) => {
         await csrf()
+         const xsrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1]
 
         setErrors([])
         setStatus(null)
