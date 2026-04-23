@@ -1,7 +1,7 @@
 import Axios from 'axios'
 
 const axios = Axios.create({
-    baseURL: 'https://hotelinking-production.up.railway.app',
+    baseURL: 'https://hotelinking-production.up.railway.app/api',
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Accept': 'application/json',
