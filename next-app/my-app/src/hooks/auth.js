@@ -12,7 +12,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const { data: user, error, mutate } = useSWR(  middleware !== 'guest' ? '/api/user' : null, '/api/user', () =>
         axios
     
-            .get('/api/user')
+            .get('/user')
             .then(res => res.data)
             .catch(error => {
                 if (error.response.status !== 409) throw error
@@ -27,7 +27,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         await csrf()
 
         axios
-             .post('/api/register', props)
+             .post('/register', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -43,7 +43,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/api/login', props)
+            .post('/login', props)
             .then(() => mutate())
             .catch(error => {
                  if (!error.response || error.response.status !== 422) throw error
@@ -59,7 +59,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/api/forgot-password', { email })
+            .post('/forgot-password', { email })
             .then(response => setStatus(response.data.status))
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -75,7 +75,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/api/reset-password', { token: params.token, ...props })
+            .post('/reset-password', { token: params.token, ...props })
             .then(response =>
                 router.push('/login?reset=' + btoa(response.data.status)),
             )
@@ -94,7 +94,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const logout = async () => {
         if (!error) {
-            await axios.post('/api/logout').then(() => mutate())
+            await axios.post('/logout').then(() => mutate())
         }
 
         window.location.pathname = '/login'
