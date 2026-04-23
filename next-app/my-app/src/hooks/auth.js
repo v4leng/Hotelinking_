@@ -25,19 +25,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const register = async ({ setErrors, ...props }) => {
         await csrf()
-         const xsrfToken = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1]
-
-        setErrors([])
 
         axios
-             .post('/api/register', props, {
-            headers: {
-                'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            }
-        })
+             .post('/api/register', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -48,20 +38,12 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const login = async ({ setErrors, setStatus, ...props }) => {
         await csrf()
-         const xsrfToken = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1]
 
         setErrors([])
         setStatus(null)
 
         axios
-            .post('/api/login', props, {
-            headers: {
-                'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
-            }
-        })
+            .post('/api/login', props)
             .then(() => mutate())
             .catch(error => {
                  if (!error.response || error.response.status !== 422) throw error
