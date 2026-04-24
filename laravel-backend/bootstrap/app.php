@@ -11,22 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-   ->withMiddleware(function (Middleware $middleware) {
-    $middleware->statefulApi(); 
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->statefulApi();
 
-    $middleware->validateCsrfTokens(except: [
-        'api/*',
-        'sanctum/csrf-cookie',
-        'login',
-        'register',
-        'logout',]);
+        $middleware->alias([
+            'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+        ]);
 
-    $middleware->alias([
-        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
-    ]);
-
-    $middleware->trustProxies(at: '*');
-})
+        $middleware->trustProxies(at: '*');
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
