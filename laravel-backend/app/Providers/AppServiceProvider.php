@@ -28,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
         // se emitan con el flag 'Secure' correctamente.
         if (app()->environment('production')) {
             URL::forceScheme('https');
+            $this->app->make('cookie')->setDefaultPathAndDomain(
+            '/', 
+            null, 
+            true,
+            'None' 
+        );
         }
 
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
